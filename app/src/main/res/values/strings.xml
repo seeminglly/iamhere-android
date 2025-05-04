@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">I am Here</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string-array name="attendance_status_array">
+        <item>출석</item>
+        <item>지각</item>
+        <item>결석</item>
+    </string-array>
+</resources>

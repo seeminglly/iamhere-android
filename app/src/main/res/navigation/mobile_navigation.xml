@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_home">
+
+    <fragment
+        android:id="@+id/navigation_home"
+        android:name="com.example.iamhere.ui.home.HomeFragment"
+        android:label="홈"
+        tools:layout="@layout/fragment_home" />
+
+
+
+
+    <fragment
+        android:id="@+id/navigation_calendar"
+        android:name="com.example.iamhere.ui.calendar.CalendarFragment"
+        android:label="캘린더"
+        tools:layout="@layout/fragment_calendar" />
+
+    <fragment
+        android:id="@+id/navigation_admin"
+        android:name="com.example.iamhere.ui.notifications.NotificationsFragment"
+        android:label="관리자"
+        tools:layout="@layout/fragment_notifications" />
+
+    <fragment
+        android:id="@+id/navigation_edit_attendance"
+        android:name="com.example.iamhere.ui.notifications.EditAttendanceFragment"
+        android:label="출석 수정"
+        tools:layout="@layout/edit_attendance" />
+
+
+    <fragment
+        android:id="@+id/navigation_mypage"
+        android:name="com.example.iamhere.ui.notifications.MypageFragment"
+        android:label="마이페이지"
+        tools:layout="@layout/fragment_mypage" />
+</navigation>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    tools:context=".ui.notifications.EditAttendanceFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- 이름 입력 -->
+        <EditText
+            android:id="@+id/nameText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="이름 입력" />
+
+        <!-- 출석 상태 선택 -->
+        <Spinner
+            android:id="@+id/attendanceStatusSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp" />
+
+        <!-- 학생 목록 -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/myRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:nestedScrollingEnabled="false"
+            tools:listitem="@layout/item_person" />
+
+        <!-- 버튼 영역 -->
+        <Button
+            android:id="@+id/btn_admin_home"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:text="관리자홈"
+            android:layout_marginStart="260dp"
+            android:layout_marginTop="80dp"
+            android:background="@drawable/rounded_background"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+</ScrollView>
