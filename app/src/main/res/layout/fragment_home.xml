@@ -72,15 +72,22 @@
                     android:textSize="20sp"
                     android:textStyle="bold" />
 
+                <!-- 예: todayCard 안에 아래 요소 추가 -->
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:id="@+id/todayLectureText"
+                    android:layout_width="332dp"
                     android:layout_height="wrap_content"
-                    android:text="캡스톤 디자인 (수) 09:00-12:00" />
+                    android:padding="0dp"
+                    android:textSize="18sp"
+                    android:textStyle="normal" />
 
                 <TextView
+                    android:id="@+id/weeklyStatsText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="출석률 90%, 이번 주 4회 출석" />
+                    android:text="출석률 0%, 이번 주 0회 출석"
+                    android:textColor="#6B6B6B"
+                    android:textSize="14sp" />
 
                 <CheckBox
                     android:layout_width="wrap_content"

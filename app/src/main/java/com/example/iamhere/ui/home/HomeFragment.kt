@@ -2,24 +2,34 @@ package com.example.iamhere.ui.home
 
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.example.iamhere.R
+import com.example.iamhere.model.Statistics
+import com.example.iamhere.model.TodayLecture
+import com.example.iamhere.network.RetrofitClient
 import com.github.mikephil.charting.charts.PieChart
 import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
 import com.google.android.material.button.MaterialButton
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class HomeFragment : Fragment() {
 
     private lateinit var todayCard: LinearLayout
     private lateinit var statsCard: LinearLayout
     private lateinit var pieChart: PieChart
+    private lateinit var todayLectureTextView: TextView
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -46,6 +56,10 @@ class HomeFragment : Fragment() {
             flipCard(false)
             statsCard.postDelayed({ drawPieChart() }, 600)
         }
+
+        todayLectureTextView = view.findViewById(R.id.todayLectureText)
+        loadTodayLecture()
+
 
         return view
     }
@@ -75,28 +89,85 @@ class HomeFragment : Fragment() {
     }
 
     private fun drawPieChart() {
-        val entries = listOf(
-            PieEntry(78.3f, "출석"),
-            PieEntry(8.7f, "지각"),
-            PieEntry(13.0f, "결석")
-        )
+        val userId = 1 // 실제 앱에서는 로그인 정보로 대체
 
-        val dataSet = PieDataSet(entries, "").apply {
-            colors = listOf(Color.GREEN, Color.YELLOW, Color.RED)
-            sliceSpace = 3f
-        }
+        RetrofitClient.attendanceApi.getStatistics(userId).enqueue(object : Callback<Statistics> {
+            override fun onResponse(call: Call<Statistics>, response: Response<Statistics>) {
+                if (response.isSuccessful) {
+                    val stats = response.body() ?: return
+                    val total = stats.total_lectures.toFloat().takeIf { it != 0f } ?: 1f
 
-        pieChart.apply {
-            data = PieData(dataSet).apply {
-                setValueTextSize(14f)
-                setValueTextColor(Color.BLACK)
+                    val entries = listOf(
+                        PieEntry(stats.attended / total * 100f, "출석"),
+                        PieEntry(stats.late / total * 100f, "지각"),
+                        PieEntry(stats.missed / total * 100f, "결석")
+                    )
+
+                    val dataSet = PieDataSet(entries, "").apply {
+                        colors = listOf(Color.GREEN, Color.YELLOW, Color.RED)
+                        sliceSpace = 3f
+                    }
+
+                    pieChart.apply {
+                        data = PieData(dataSet).apply {
+                            setValueTextSize(14f)
+                            setValueTextColor(Color.BLACK)
+                        }
+                        description.isEnabled = false
+                        setDrawEntryLabels(false)
+                        legend.orientation = Legend.LegendOrientation.HORIZONTAL
+                        legend.isWordWrapEnabled = true
+                        legend.textSize = 14f
+                        invalidate()
+                    }
+                } else {
+                    Log.e("통계 API", "응답 실패: ${response.code()}")
+                }
             }
-            description.isEnabled = false
-            setDrawEntryLabels(false)
-            legend.orientation = Legend.LegendOrientation.HORIZONTAL
-            legend.isWordWrapEnabled = true
-            legend.textSize = 14f
-            invalidate()
-        }
+
+            override fun onFailure(call: Call<Statistics>, t: Throwable) {
+                Log.e("통계 API", "연결 실패: ${t.message}")
+            }
+        })
     }
+
+    private fun loadTodayLecture() {
+        val userId = 1
+
+        RetrofitClient.attendanceApi.getTodayLecture(userId).enqueue(object : Callback<TodayLecture> {
+            override fun onResponse(call: Call<TodayLecture>, response: Response<TodayLecture>) {
+                if (response.isSuccessful) {
+                    val lecture = response.body() ?: return
+
+                    val title = lecture.title.trim()
+                    val isEmpty = lecture.day.isBlank() || lecture.time.isBlank()
+
+                    if (title == "오늘은 수업 없음" || isEmpty) {
+                        todayLectureTextView.text = title
+                    } else {
+                        val formatted = getString(
+                            R.string.lecture_info,
+                            title,
+                            lecture.day.trim(),
+                            lecture.time.trim()
+                        )
+                        todayLectureTextView.text = formatted
+                    }
+
+                } else {
+                    todayLectureTextView.text = "출석 카드 정보 로딩 실패"
+                    Log.e("강의 API", "응답 실패: ${response.code()}")
+                }
+            }
+
+            override fun onFailure(call: Call<TodayLecture>, t: Throwable) {
+                todayLectureTextView.text = "서버 연결 실패"
+                Log.e("강의 API", "연결 실패: ${t.message}")
+            }
+        })
+    }
+
+
+
+
 }
