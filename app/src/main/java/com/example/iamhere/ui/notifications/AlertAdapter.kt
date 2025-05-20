@@ -7,11 +7,15 @@ import android.widget.ImageButton
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.iamhere.R
+import com.example.iamhere.model.Alert
+
 
 class AlertAdapter(
-    private val alerts: List<Alert>,
-    private val onDelete: (Int) -> Unit
+    alerts: MutableList<Alert>,
+    private val onDeleteClick: (Int) -> Unit
 ) : RecyclerView.Adapter<AlertAdapter.AlertViewHolder>() {
+
+    private val alerts = alerts  // 👉 내부 필드로 저장
 
     inner class AlertViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val messageText: TextView = itemView.findViewById(R.id.alertMessage)
@@ -30,9 +34,15 @@ class AlertAdapter(
         holder.messageText.text = alert.message
         holder.timeText.text = alert.time
         holder.deleteButton.setOnClickListener {
-            onDelete(position)
+            onDeleteClick(position)
         }
     }
 
     override fun getItemCount(): Int = alerts.size
+
+    fun removeItem(position: Int) {
+        alerts.removeAt(position)
+        notifyItemRemoved(position)
+    }
+
 }
