@@ -35,7 +35,7 @@
 
     <fragment
         android:id="@+id/navigation_mypage"
-        android:name="com.example.iamhere.ui.notifications.MypageFragment"
+        android:name="com.example.iamhere.ui.mypage.MypageFragment"
         android:label="마이페이지"
         tools:layout="@layout/fragment_mypage" />
 </navigation>

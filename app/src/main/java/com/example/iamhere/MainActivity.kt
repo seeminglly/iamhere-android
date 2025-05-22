@@ -2,6 +2,7 @@ package com.example.iamhere
 import androidx.navigation.fragment.NavHostFragment
 
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.ui.NavigationUI
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -11,6 +12,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        Log.d("MainActivity", "MainActivity 실행됨")
         val navView = findViewById<BottomNavigationView>(R.id.nav_view)
 
         // ✅ NavController를 직접 NavHostFragment에서 가져오기
