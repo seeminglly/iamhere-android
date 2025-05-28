@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "424320888928",
+    "project_id": "i-am-here-458403",
+    "storage_bucket": "i-am-here-458403.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:424320888928:android:354a9dd61027aa91555305",
+        "android_client_info": {
+          "package_name": "com.example.iamhere"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCiQqh1HOsHhCjRfUzpAekArmkUDiS2X7I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
