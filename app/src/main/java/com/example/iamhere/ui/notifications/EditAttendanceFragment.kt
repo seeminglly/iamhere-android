@@ -42,7 +42,7 @@ class EditAttendanceFragment : Fragment() {
 
         // 이후 retrofit으로 데이터 받아오면 교체
         val retrofit = Retrofit.Builder()
-            .baseUrl("http://34.64.206.110:8000/")  // 실서버 주소
+            .baseUrl("http://34.64.121.178:8000/")  // 실서버 주소
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 

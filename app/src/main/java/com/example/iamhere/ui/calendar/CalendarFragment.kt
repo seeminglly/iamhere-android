@@ -49,7 +49,7 @@ class CalendarFragment : Fragment() {
 
         // ✅ Retrofit으로 API 호출 및 데코레이터 적용
         val retrofit = Retrofit.Builder()
-            .baseUrl("http://34.64.206.110:8000/")  // 여기를 본인의 FastAPI 서버 주소로 수정
+            .baseUrl("http://34.64.121.178:8000/")  // 여기를 본인의 FastAPI 서버 주소로 수정
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 

@@ -38,7 +38,7 @@ class NotificationsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val retrofit = Retrofit.Builder()
-            .baseUrl("http://34.64.206.110:8000/")  // ✅ 실제 서버 주소로 수정
+            .baseUrl("http://34.64.121.178:8000/")  // ✅ 실제 서버 주소로 수정
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
