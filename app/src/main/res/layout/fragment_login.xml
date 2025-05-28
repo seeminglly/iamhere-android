@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="24dp">
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="200dp" />
+
+    <!-- 학생 / 교수 선택 -->
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center">
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/studentButton"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="60dp"
+            android:text="학생"
+            android:textSize="20sp"
+            android:textColor="#000000"
+            android:background="@drawable/student_button_background"
+            android:backgroundTint="@null"/>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/professorButton"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="60dp"
+            android:text="교수"
+            android:textSize="20sp"
+            android:textColor="#000000"
+            android:background="@drawable/professor_button_background"
+            android:backgroundTint="@null"/>
+    </LinearLayout>
+
+    <!-- 아이디/비밀번호 -->
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp">
+
+        <EditText
+            android:id="@+id/editTextId"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:hint="아이디" />
+
+        <EditText
+            android:id="@+id/editTextPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="비밀번호"
+            android:inputType="textPassword"
+            android:layout_marginTop="8dp" />
+
+        <Button
+            android:id="@+id/loginButton"
+            android:layout_width="180dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center"
+            android:text="로그인"
+            android:textSize="17sp"
+            android:backgroundTint="#FF6200EE"
+            android:layout_marginTop="40dp"/>
+    </LinearLayout>
+
+</LinearLayout>
