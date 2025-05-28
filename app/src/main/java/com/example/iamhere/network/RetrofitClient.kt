@@ -4,7 +4,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object RetrofitClient {
-    private const val BASE_URL = "http://34.64.206.110:8000/"  // ← 예시 GCP IP
+    private const val BASE_URL = "http://34.64.121.178:8000/"  // ← 예시 GCP IP
 
     val attendanceApi: AttendanceApi by lazy {
         Retrofit.Builder()
