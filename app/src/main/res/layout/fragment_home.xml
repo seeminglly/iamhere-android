@@ -90,16 +90,19 @@
                     android:textSize="14sp" />
 
                 <CheckBox
+                    android:id="@+id/checkbox_attended"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="출석" />
 
                 <CheckBox
+                    android:id="@+id/checkbox_late"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="지각" />
 
                 <CheckBox
+                    android:id="@+id/checkbox_absent"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="결석" />

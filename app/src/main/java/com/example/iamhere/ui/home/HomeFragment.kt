@@ -6,10 +6,12 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CheckBox
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.example.iamhere.R
+import com.example.iamhere.model.Attendance
 import com.example.iamhere.model.Statistics
 import com.example.iamhere.model.TodayLecture
 import com.example.iamhere.network.RetrofitClient
@@ -30,6 +32,11 @@ class HomeFragment : Fragment() {
     private lateinit var pieChart: PieChart
     private lateinit var todayLectureTextView: TextView
 
+    private lateinit var checkBoxAttended: CheckBox
+    private lateinit var checkBoxLate: CheckBox
+    private lateinit var checkBoxAbsent: CheckBox
+
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -40,6 +47,11 @@ class HomeFragment : Fragment() {
         todayCard = view.findViewById(R.id.todayCard)
         statsCard = view.findViewById(R.id.statsCard)
         pieChart = view.findViewById(R.id.pieChart)
+
+        checkBoxAttended = view.findViewById(R.id.checkbox_attended)
+        checkBoxLate = view.findViewById(R.id.checkbox_late)
+        checkBoxAbsent = view.findViewById(R.id.checkbox_absent)
+
 
         view.findViewById<MaterialButton>(R.id.todayButton).setOnClickListener {
             flipCard(true)
@@ -61,6 +73,8 @@ class HomeFragment : Fragment() {
         loadTodayLecture()
 
 
+
+
         return view
     }
 
@@ -79,6 +93,36 @@ class HomeFragment : Fragment() {
         nameTextView.text = getString(R.string.label_user_name, userName)
         idTextView.text = getString(R.string.label_user_id, studentNumber)
 
+    }
+
+    private fun loadTodayAttendance() {
+        val prefs = requireContext().getSharedPreferences("auth", android.content.Context.MODE_PRIVATE)
+        val userId = prefs.getString("user_id", null)?.removePrefix("s")?.toIntOrNull() ?: return
+
+        RetrofitClient.attendanceApi.getTodayAttendance(userId).enqueue(object : Callback<List<Attendance>> {
+            override fun onResponse(call: Call<List<Attendance>>, response: Response<List<Attendance>>) {
+                if (response.isSuccessful) {
+                    val attendances = response.body()
+                    if (!attendances.isNullOrEmpty()) {
+                        val status = attendances[0].status
+                        when (status) {
+                            "출석" -> checkBoxAttended.isChecked = true
+                            "지각" -> checkBoxLate.isChecked = true
+                            "결석" -> checkBoxAbsent.isChecked = true
+                        }
+
+                        // ✅ 체크박스 비활성화 처리
+                        checkBoxAttended.isEnabled = false
+                        checkBoxLate.isEnabled = false
+                        checkBoxAbsent.isEnabled = false
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<List<Attendance>>, t: Throwable) {
+                Log.e("출석 API", "연결 실패: ${t.message}")
+            }
+        })
     }
 
 
