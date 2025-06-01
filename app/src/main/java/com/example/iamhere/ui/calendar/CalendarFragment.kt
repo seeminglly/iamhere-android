@@ -1,5 +1,6 @@
 package com.example.iamhere.ui.calendar
 
+import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -13,10 +14,7 @@ import com.example.iamhere.model.CalendarRecord
 import com.example.iamhere.network.AttendanceApi
 import com.prolificinteractive.materialcalendarview.CalendarDay
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import retrofit2.Retrofit
+import retrofit2.*
 import retrofit2.converter.gson.GsonConverterFactory
 
 class CalendarFragment : Fragment() {
@@ -33,12 +31,13 @@ class CalendarFragment : Fragment() {
         val absentCount = view.findViewById<TextView>(R.id.absent_count)
         val worstDay = view.findViewById<TextView>(R.id.worst_day)
 
-        // 예시 통계 텍스트
+        // 초기 통계 텍스트
         attendanceCount.text = "출석 횟수: 0회"
         lateCount.text = "지각 횟수: 0회"
         absentCount.text = "결석 횟수: 0회"
         worstDay.text = "가장 출석률이 좋지 않은 요일: -"
 
+        // 날짜 클릭 시 Toast
         calendarView.setOnDateChangedListener { _, date, _ ->
             Toast.makeText(
                 requireContext(),
@@ -47,15 +46,24 @@ class CalendarFragment : Fragment() {
             ).show()
         }
 
-        // ✅ Retrofit으로 API 호출 및 데코레이터 적용
+        // ✅ SharedPreferences에서 user_id 가져오기
+        val prefs = requireContext().getSharedPreferences("user_info", Context.MODE_PRIVATE)
+        val userId = prefs.getInt("user_id", -1)
+
+        if (userId == -1) {
+            Toast.makeText(requireContext(), "로그인 정보가 없습니다", Toast.LENGTH_SHORT).show()
+            return view
+        }
+
+        // ✅ Retrofit 설정
         val retrofit = Retrofit.Builder()
-            .baseUrl("http://34.64.121.178:8000/")  // 여기를 본인의 FastAPI 서버 주소로 수정
+            .baseUrl("http://34.64.121.178:8000/")  // 본인의 서버 주소
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
         val api = retrofit.create(AttendanceApi::class.java)
-        val userId = 1  // 테스트용 사용자 ID
 
+        // ✅ 출결 데이터 요청
         api.getCalendarData(userId).enqueue(object : Callback<List<CalendarRecord>> {
             override fun onResponse(
                 call: Call<List<CalendarRecord>>,
@@ -70,7 +78,7 @@ class CalendarFragment : Fragment() {
 
                     for (record in records) {
                         val parts = record.date.split("-").map { it.toInt() }
-                        val day = CalendarDay.from(parts[0], parts[1] - 1, parts[2])  // month -1
+                        val day = CalendarDay.from(parts[0], parts[1] - 1, parts[2])
 
                         when (record.status) {
                             "attendance" -> attendanceDates.add(day)
@@ -83,7 +91,6 @@ class CalendarFragment : Fragment() {
                     calendarView.addDecorator(CircleDecorator(lateDates, Color.YELLOW))
                     calendarView.addDecorator(CircleDecorator(absenceDates, Color.RED))
 
-                    // 통계 수치 갱신
                     attendanceCount.text = "출석 횟수: ${attendanceDates.size}회"
                     lateCount.text = "지각 횟수: ${lateDates.size}회"
                     absentCount.text = "결석 횟수: ${absenceDates.size}회"

@@ -32,19 +32,19 @@
             android:layout_marginTop="16dp" />
 
         <TextView
-            android:id="@+id/textView3"
+            android:id="@+id/userNameText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="수정이"
+            android:text="이름"
             android:textColor="@color/black"
             android:layout_gravity="center"
             android:layout_marginTop="8dp" />
 
         <TextView
-            android:id="@+id/textView4"
+            android:id="@+id/userIdText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="20211110"
+            android:text="학번"
             android:textColor="@color/black"
             android:layout_gravity="center"
             android:layout_marginTop="4dp" />

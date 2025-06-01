@@ -64,6 +64,24 @@ class HomeFragment : Fragment() {
         return view
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        // 1. SharedPreferences에서 로그인 정보 가져오기
+        val prefs = requireContext().getSharedPreferences("auth", android.content.Context.MODE_PRIVATE)
+        val userName = prefs.getString("user_name", "이름 없음")
+        val studentNumber = prefs.getString("student_number", "학번 없음")
+
+        // 2. TextView 찾아서 반영
+        val nameTextView = view.findViewById<TextView>(R.id.userNameText)
+        val idTextView = view.findViewById<TextView>(R.id.userIdText)
+
+        nameTextView.text = getString(R.string.label_user_name, userName)
+        idTextView.text = getString(R.string.label_user_id, studentNumber)
+
+    }
+
+
     private fun flipCard(showFront: Boolean) {
         val scale = resources.displayMetrics.density
         todayCard.cameraDistance = 8000 * scale
@@ -89,7 +107,10 @@ class HomeFragment : Fragment() {
     }
 
     private fun drawPieChart() {
-        val userId = 1 // 실제 앱에서는 로그인 정보로 대체
+        //val userId = 1 // 실제 앱에서는 로그인 정보로 대체
+        val prefs = requireContext().getSharedPreferences("auth", android.content.Context.MODE_PRIVATE)
+        val userId = prefs.getString("user_id", null)?.removePrefix("s")?.toIntOrNull() ?: 0
+
 
         RetrofitClient.attendanceApi.getStatistics(userId).enqueue(object : Callback<Statistics> {
             override fun onResponse(call: Call<Statistics>, response: Response<Statistics>) {
@@ -132,7 +153,10 @@ class HomeFragment : Fragment() {
     }
 
     private fun loadTodayLecture() {
-        val userId = 1
+        //val userId = 1
+        val prefs = requireContext().getSharedPreferences("auth", android.content.Context.MODE_PRIVATE)
+        val userId = prefs.getString("user_id", null)?.removePrefix("s")?.toIntOrNull() ?: 0
+
 
         RetrofitClient.attendanceApi.getTodayLecture(userId).enqueue(object : Callback<TodayLecture> {
             override fun onResponse(call: Call<TodayLecture>, response: Response<TodayLecture>) {
